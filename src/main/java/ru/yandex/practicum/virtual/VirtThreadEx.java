@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -21,10 +19,6 @@ public class VirtThreadEx {
 		
 //		viewCarrierThreadPoolSize();
 		System.out.println("--------------------------------");
-		
-		// 1 case Различные варианты создания виртуальных потоков
-//		concurrentMorningRoutine();
-//		concurrentMorningRoutineUsingExecutors();
 		
 		/*
 		jdk.virtualThreadScheduler.parallelism — количество доступных платформенных потоков
@@ -124,7 +118,7 @@ public class VirtThreadEx {
 				() -> {
 					log("I'm working hard");
 					while (true) {
-//						sleep(Duration.ofMillis(100L));
+						sleep(Duration.ofMillis(100L));
 					}
 				});
 	}
@@ -136,56 +130,6 @@ public class VirtThreadEx {
 					log("I'm going to take a break");
 					sleep(Duration.ofSeconds(1L));
 					log("I'm done with the break");
-				});
-	}
-	
-	// ----- 1 case -------
-	static void concurrentMorningRoutine() throws InterruptedException {
-		var bathTime = bathTime();
-		var boilingWater = boilingWater();
-		bathTime.join();
-		boilingWater.join();
-	}
-	
-	static void concurrentMorningRoutineUsingExecutors() throws ExecutionException, InterruptedException {
-		final ThreadFactory factory = Thread.ofVirtual().name("routine-", 0).factory();
-		try (var executor = Executors.newThreadPerTaskExecutor(factory)) {
-			var bathTime =
-					executor.submit(
-							() -> {
-								log("I'm going to take a bath");
-								sleep(Duration.ofMillis(500L));
-								log("I'm done with the bath");
-							});
-			var boilingWater =
-					executor.submit(
-							() -> {
-								log("I'm going to boil some water");
-								sleep(Duration.ofSeconds(1L));
-								log("I'm done with the water");
-							});
-			bathTime.get();
-			boilingWater.get();
-		}
-	}
-	
-	static Thread bathTime() {
-		return virtualThread(
-				"Bath time",
-				() -> {
-					log("I'm going to take a bath");
-					sleep(Duration.ofMillis(500L));
-					log("I'm done with the bath");
-				});
-	}
-	
-	static Thread boilingWater() {
-		return virtualThread(
-				"Boil some water",
-				() -> {
-					log("I'm going to boil some water");
-					sleep(Duration.ofSeconds(1L));
-					log("I'm done with the water");
 				});
 	}
 	
