@@ -16,3 +16,10 @@ java -jar ./target/jcstress.jar -v
 ```bash
 java -jar ./target/jcstress.jar -t PrinterPoolBarrierJCStressTest
 ```
+
+## Профилирование виртуальных потоков через JFR
+
+Пошаговая инструкция для примера `ru.yandex.practicum.virtual.VirtThreadEx`:
+[docs/jfr-virtual-threads.md](docs/jfr-virtual-threads.md). В ней показаны запись
+JFR, поиск пининга, подключение к работающей JVM и анализ других событий
+виртуальных потоков.
