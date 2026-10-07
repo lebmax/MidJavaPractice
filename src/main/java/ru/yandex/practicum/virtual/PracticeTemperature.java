@@ -19,7 +19,7 @@ public class PracticeTemperature {
 		var temperatures = generateTemperatures();
 		
 		// Используем виртуальные потоки
-//		var timeSpentOnVirtualThreadsMs = handleTemperatures(temperatures, Executors.newVirtualThreadPerTaskExecutor());
+//		var timeSpentOnPlatformThreadsMs = handleTemperatures(temperatures, Executors.newVirtualThreadPerTaskExecutor());
 //
 		logger.info("-----");
 //		// Используем обычные потоки, чтобы сравнить результат
