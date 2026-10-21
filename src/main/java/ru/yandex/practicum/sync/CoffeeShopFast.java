@@ -16,10 +16,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class CoffeeShopFast {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CoffeeShopSlow.class);
+	private static final Logger logger = LoggerFactory.getLogger(CoffeeShopFast.class);
 
 	public static void main(String[] args) throws InterruptedException {
-		final int orders = 30;
+		final int orders = 10;
 		
 		CoffeeShopSlow.OrderProducer producer = new CoffeeShopSlow.OrderProducer();
 		CoffeeShopSlow.OrderConsumer consumer = new CoffeeShopSlow.OrderConsumer();
@@ -56,7 +56,7 @@ public class CoffeeShopFast {
 			return null;
 		};
 		
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 		
 		Collection<Callable<Void>> callables = new ArrayList<>();
 		callables.add(producerProcess);
@@ -66,18 +66,18 @@ public class CoffeeShopFast {
 		callables.add(consumerProcess);
 		callables.add(consumerProcess);
 		
-		try (ExecutorService executor = Executors.newFixedThreadPool(8)) {
-			executor.invokeAll(callables);
-		}
-		
-//		try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+//		try (ExecutorService executor = Executors.newCachedThreadPool()) {
 //			executor.invokeAll(callables);
 //		}
-
-		long end = System.currentTimeMillis();
 		
-		logger.info("Время выполнения: {} с!!!!",
-					TimeUnit.SECONDS.convert(Duration.ofMillis(end).minus(Duration.ofMillis(start)))
+		try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+			executor.invokeAll(callables);
+		}
+
+		long end = System.nanoTime();
+		long elapsedSec = TimeUnit.SECONDS.convert(
+				Duration.ofNanos(end).minus(Duration.ofNanos(start))
 		);
+		logger.info("Время выполнения: {} с!!!!", elapsedSec);
 	}
 }

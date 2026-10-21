@@ -13,12 +13,14 @@ public class CounterTest {
 		var counter = new SimpleCounter();
 		var counterVolatile = new VolatileCounter();
 		var counterAtomic = new AtomicCounter();
+		var counterAdder = new AdderCounter();
 		var counterSynchronized = new SynchronizedCounter();
 		var counterLock = new LockCounter();
 		
 		test(counter, "SimpleCounter");
 		test(counterVolatile, "VolatileCounter");
 		test(counterAtomic, "Atomic");
+		test(counterAdder, "Adder");
 		test(counterSynchronized, "SynchronizedCounter");
 		test(counterLock, "LockCounter");
 	}
@@ -69,6 +71,20 @@ public class CounterTest {
 		// Метод для получения текущего числа лайков
 		public long getValue() {
 			return likeCount.get(); // Атомарное получение текущего значения
+		}
+	}
+
+	public static class AdderCounter implements Counter {
+		private final LongAdder likeCount = new LongAdder();
+
+		// Метод для добавления лайка
+		public void increment() {
+			likeCount.increment();
+		}
+
+		// Метод для получения текущего числа лайков
+		public long getValue() {
+			return likeCount.longValue();
 		}
 	}
 	

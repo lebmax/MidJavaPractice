@@ -1,5 +1,6 @@
 package ru.yandex.practicum.sync.additional;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -41,9 +42,7 @@ public class PrinterPool {
 		
 		for (int i = 1; i <= 5; i++) {
 			final int docNumber = i;
-			new Thread(() -> {
-				pool.printDocument("Документ " + docNumber);
-			}).start();
+			new Thread(() -> pool.printDocument("Документ " + docNumber)).start();
 		}
 	}
 }
