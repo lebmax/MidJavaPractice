@@ -20,11 +20,11 @@ public class PracticeTemperature {
 		
 		// Используем виртуальные потоки
 //		var timeSpentOnPlatformThreadsMs = handleTemperatures(temperatures, Executors.newVirtualThreadPerTaskExecutor());
-//
+
 		logger.info("-----");
-//		// Используем обычные потоки, чтобы сравнить результат
-//		var timeSpentOnPlatformThreadsMs = handleTemperatures(temperatures, Executors.newCachedThreadPool());
-		var timeSpentOnPlatformThreadsMs = handleTemperatures(temperatures, Executors.newWorkStealingPool());
+		// Используем обычные потоки, чтобы сравнить результат
+		var timeSpentOnPlatformThreadsMs = handleTemperatures(temperatures, Executors.newCachedThreadPool());
+//		var timeSpentOnPlatformThreadsMs = handleTemperatures(temperatures, Executors.newWorkStealingPool());
 		
 		logger.info("-----");
 //		logger.info("Время затрачено при виртуальных потоках - {} мс", timeSpentOnVirtualThreadsMs);
@@ -49,11 +49,6 @@ public class PracticeTemperature {
 				.map(it -> it / 10)
 				.boxed()
 				.toList();
-//		return IntStream.range(-731, 2261)
-//				.asDoubleStream()
-//				.map(it -> it / 10)
-//				.boxed()
-//				.toList();
 	}
 	
 	// Обрабатываем конкретное значение температуры - выводим описание
